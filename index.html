@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tô no Trabalho - Cardápio</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        :root {
+            --primary: #ffc107;
+            --dark: #121212;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+            --text-muted: #a0a0a0;
+            --input-bg: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            padding-bottom: 120px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            background: linear-gradient(180deg, rgba(255,193,7,0.1) 0%, rgba(18,18,18,1) 100%);
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .category-title {
+            max-width: 1200px;
+            margin: 30px auto 10px auto;
+            padding: 0 20px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 160px;
+            background-color: #252525;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--primary);
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            min-height: 50px;
+        }
+
+        .product-modifiers {
+            margin-bottom: 15px;
+            background: #181818;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .product-modifiers label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .product-modifiers select, .product-modifiers div {
+            width: 100%;
+            background: var(--input-bg);
+            color: white;
+            border: 1px solid #444;
+            padding: 6px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background-color: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background-color: #e0a800;
+        }
+
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-top: 3px solid var(--primary);
+        }
+
+        .cart-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+            font-size: 1.7rem;
+            color: var(--primary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: #ff3b30;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .checkout-btn:hover {
+            background-color: #20ba59;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-briefcase"></i> Tô no Trabalho</h1>
+        <p>A vitrine perfeita para matar a sua fome corporativa.</p>
+    </header>
+
+    <!-- O cardápio é injetado de forma automatizada aqui -->
+    <div id="cardapio-container"></div>
+
+    <!-- Rodapé do Carrinho Fixado na Tela -->
+    <div class="cart-bar">
+        <div class="cart-info">
+            <div class="cart-icon-wrapper">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">Total selecionado:</div>
+                <div id="cart-total" style="font-weight: bold; color: var(--primary); font-size: 1.3rem;">R$ 0,00</div>
+            </div>
+        </div>
+        <a href="#" id="whatsapp-link" target="_blank" class="checkout-btn" onclick="return processCheckout(event)">
+            <i class="fa-brands fa-whatsapp"></i> Fechar Pedido no Whats
+        </a>
+    </div>
+
+    <script>
+        // ========================================================
+        // CENTRAL DE CONFIGURAÇÃO: EDITE SEUS PREÇOS E PRODUTOS AQUI
+        // ========================================================
+        const WHATSAPP_NUMBER = "5511999999999"; 
+
+        const CARDAPIO = {
+            burgers: {
+                titulo: "Hambúrgueres Artesanais",
+                icone: "fa-hamburger",
+                itens: [
+                    { id: "b_classico", nome: "Burgue Clássico", preco: 30.00, desc: "Pão francês, hambúrguer artesanal, alface, tomate, queijo e molho de maionese." },
+                    { id: "b_especial", nome: "Burgue Especial", preco: 35.00, desc: "Pão francês, hambúrguer artesanal, cebola caramelizada, bacon, queijo e molho de maionese." },
+                    { id: "b_monster",  nome: "Burgue Monster",  preco: 40.00, desc: "Pão francês, 2 hambúrgueres artesanais, bacon em dose dupla, picles, alface, tomate, queijo e molho de maionese." },
+                    { id: "b_kids",     nome: "Burguer Kids",   preco: 15.00, desc: "Pão francês, hambúrguer artesanal, queijo e molho de maionese." }
+                ]
+            },
+            caldos_pasteis: {
+                titulo: "Caldos & Pastéis",
+                icone: "fa-bowl-food",
+                itens: [
+                    { id: "c_quente", nome: "Caldos Quentinhos", preco: 20.00, desc: "Porção individual super saborosa.", sabores: ["Frango", "Carne", "Verde"] },
+                    { id: "p_crocante", nome: "Pastéis Crocantes", preco: 10.00, desc: "Frito na hora, recheio generoso.", sabores: ["Carne", "Frango", "Presunto & Queijo"] }
+                ]
+            },
+            espetinhos: {
+                titulo: "Espetinhos na Brasa",
+                icone: "fa-fire",
+                itens: [
+                    { id: "e_carne", nome: "Espetinho de Carne", precoSimples: 15.00, precoCompleto: 25.00, desc: "Espetinho selecionado assado na brasa.", tipo: "espeto" },
+                    { id: "e_frango", nome: "Espetinho de Frango", precoSimples: 15.00, precoCompleto: 25.00, desc: "Espetinho selecionado assado na brasa.", tipo: "espeto" },
+                    { id: "e_coracao", nome: "Espetinho de Coração", precoSimples: 18.00, precoCompleto: 28.00, desc: "Espetinho selecionado assado na brasa.", tipo: "espeto" },
+
+{ id: "e_kafta", nome: "Espetinho de Kafta", precoSimples: 15.00, precoCompleto: 25.00, desc: "Espetinho selecionado assado na brasa.", tipo: "espeto" },
+{ id: "e_kafta_q", nome: "Kafta com Queijo", precoSimples: 18.00, precoCompleto: 28.00, desc: "Espetinho selecionado assado na brasa.", tipo: "espeto" }
+]
+}
+};
+// ========================================================
+// MOTOR DO SITE: LÓGICA DO CARRINHO E RENDERIZAÇÃO
+// ========================================================
+let cart = [];
+function formatMoney(value) {
+return R$ ${value.toFixed(2).replace('.', ',')};
+}
+function renderCardapio() {
+const container = document.getElementById('cardapio-container');
+let html = '';
+for (let catKey in CARDAPIO) {
+const categoria = CARDAPIO[catKey];
+html += <div class="category-title"><i class="fa-solid ${categoria.icone}"></i> ${categoria.titulo}</div>;
+html += <main class="products-grid">;
+categoria.itens.forEach(item => {
+html += <div class="product-card">;
+html += <div class="product-image"><i class="fa-solid ${categoria.icone}"></i></div>;
+html += <div class="product-info">;
+html += <div>;
+html += <div class="product-title">${item.nome}</div>;
+html += <div class="product-desc">${item.desc}</div>;
+html += </div>;
+if (item.sabores) {
+html += <div class="product-modifiers">;
+html += <label>Escolha o Sabor:</label>;
+html += <select id="sabor-${item.id}">;
+item.sabores.forEach(s => html += <option value="${s}">${s}</option>);
+html += </select>;
+html += </div>;
+}
+if (item.tipo === "espeto") {
+html += <div class="product-modifiers">;
+html += <label>Modalidade:</label>;
+html += <div class="radio-group">;
+html += <label class="radio-option"><input type="radio" name="mod-${item.id}" value="Simples" checked onchange="updateEspetoPrice('${item.id}', ${item.precoSimples})"> Simples (${formatMoney(item.precoSimples)})</label>;
+html += <label class="radio-option"><input type="radio" name="mod-${item.id}" value="Completo" onchange="updateEspetoPrice('${item.id}', ${item.precoCompleto})"> Completo (${formatMoney(item.precoCompleto)})</label>;
+html += </div>;
+html += </div>;
+}
+html += <div class="product-footer">;
+if (item.tipo === "espeto") {
+html += <div class="product-price" id="price-display-${item.id}">${formatMoney(item.precoSimples)}</div>;
+html += <button class="add-btn" onclick="addEspetoToCart('${item.id}', '${item.nome}', ${item.precoSimples}, ${item.precoCompleto})"><i class="fa-solid fa-plus"></i></button>;
+} else if (item.sabores) {
+html += <div class="product-price">${formatMoney(item.preco)}</div>;
+html += <button class="add-btn" onclick="addSaborToCart('${item.id}', '${item.nome}', ${item.preco})"><i class="fa-solid fa-plus"></i></button>;
+} else {
+html += <div class="product-price">${formatMoney(item.preco)}</div>;
+html += <button class="add-btn" onclick="addRegularToCart('${item.nome}', ${item.preco})"><i class="fa-solid fa-plus"></i></button>;
+}
+html += </div>;
+html += </div>;
+html += </div>;
+});
+html += </main>;
+}
+container.innerHTML = html;
+}
+function updateEspetoPrice(id, price) {
+document.getElementById(price-display-${id}).innerText = formatMoney(price);
+}
+function addRegularToCart(nome, preco) {
+pushToCart(nome, preco);
+}
+function addSaborToCart(id, nomeBase, preco) {
+const sabor = document.getElementById(sabor-${id}).value;
+const nomeCompleto = ${nomeBase} (${sabor});
+pushToCart(nomeCompleto, preco);
+}
+function addEspetoToCart(id, nomeBase, precoS, precoC) {
+const modalidade = document.querySelector(input[name="mod-${id}"]:checked).value;
+const precoFinal = modalidade === "Simples" ? precoS : precoC;
+const nomeCompleto = ${nomeBase} [${modalidade}];
+pushToCart(nomeCompleto, precoFinal);
+}
+function pushToCart(nome, preco) {
+const indexExistente = cart.findIndex(item => item.nome === nome);
+if (indexExistente > -1) {
+cart[indexExistente].qtd += 1;
+} else {
+cart.push({ nome: nome, preco: preco, qtd: 1 });
+}
+updateCartUI();
+}
+function updateCartUI() {
+let totalItems = 0;
+let totalPrice = 0;
+cart.forEach(item => {
+totalItems += item.qtd;
+totalPrice += item.preco * item.qtd;
+});
+document.getElementById('cart-count').innerText = totalItems;
+document.getElementById('cart-total').innerText = formatMoney(totalPrice);
+}
+function processCheckout(event) {
+if (cart.length === 0) {
+alert("O carrinho está vazio! Selecione um item do cardápio.");
+return false;
+}
+let message = "📝 NOVO PEDIDO - TÔ NO TRABALHO 📝\n\n";
+let totalGeral = 0;
+cart.forEach(item => {
+let subtotal = item.preco * item.qtd;
+totalGeral += subtotal;
+message += ▪️ *${item.qtd}x* ${item.nome}\n Subtotal: ${formatMoney(subtotal)}\n\n;
+});
+message += ───────────────────\n;
+message += 💰 *Total dos Itens:* ${formatMoney(totalGeral)}\n\n;
+message += 💡 _Finalize enviando seu endereço completo aqui no chat para definirmos o frete!_;
+document.getElementById('whatsapp-link').href = https://wa.me{WHATSAPP_NUMBER}?text=${encodeURIComponent(message)};
+return true;
+}
+window.onload = renderCardapio;
+
+
+
+---
+
+Me avise se o código rodar certinho agora! Quando testar no seu navegador, se quiser ajustar algo como a **cor do fundo** ou adicionar mais **categorias (tipo Bebidas)**, é só falar.
