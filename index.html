@@ -1,43 +1,347 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tô no Trabalho - Cardápio</title>
-    <!-- Ícones -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <!-- Seu CSS na pasta styles -->
-    <link rel="stylesheet" href="styles/style.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Peça seus hambúrgueres, caldos, pastéis e espetinhos no Tô no Trabalho."
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Tô no Trabalho — Hambúrgueres & Espetinhos</title>
+
+    <link
+        rel="stylesheet"
+        href="styles/style.css"
+    >
 </head>
+
 <body>
 
-    <header>
-        <h1><i class="fa-solid fa-briefcase"></i> Tô no Trabalho</h1>
-        <p>A desculpa perfeita para quando te ligarem cobrando!</p>
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
+
+    <header class="site-header">
+
+        <div class="site-header__inner">
+
+            <a
+                href="#inicio"
+                class="brand"
+                aria-label="Tô no Trabalho — início"
+            >
+                <span class="brand__name">
+                    Tô no Trabalho
+                </span>
+
+                <span class="brand__tagline">
+                    Hambúrgueres & Espetinhos
+                </span>
+            </a>
+
+
+            <button
+                class="cart-trigger"
+                id="cart-trigger"
+                type="button"
+                aria-label="Abrir carrinho"
+                aria-controls="cart-panel"
+            >
+
+                <span class="cart-trigger__label">
+                    Carrinho
+                </span>
+
+                <span
+                    class="cart-trigger__count"
+                    id="cart-count"
+                    aria-live="polite"
+                >
+                    0
+                </span>
+
+            </button>
+
+        </div>
+
     </header>
 
-    <!-- Onde a mágica acontece (Injeção dos produtos) -->
-    <div id="cardapio-container"></div>
 
-    <!-- Barra do Carrinho Fixa -->
-    <div class="cart-bar">
-        <div class="cart-info">
-            <div class="cart-icon-wrapper">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span class="cart-count" id="cart-count">0</span>
+    <main id="inicio">
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section
+            class="hero"
+            aria-labelledby="hero-title"
+        >
+
+            <div class="hero__content">
+
+                <span class="hero__eyebrow">
+                    Feito para matar a fome
+                </span>
+
+                <h1 id="hero-title">
+                    Seu próximo pedido
+                    <span>começa aqui.</span>
+                </h1>
+
+                <p class="hero__description">
+                    Hambúrgueres artesanais, caldos, pastéis
+                    e espetinhos preparados para chegar até você.
+                </p>
+
+                <a
+                    href="#cardapio"
+                    class="hero__cta"
+                >
+                    Ver cardápio
+                </a>
+
             </div>
+
+
+            <div
+                class="hero__visual"
+                aria-hidden="true"
+            >
+
+                <div class="hero__glow"></div>
+
+                <div class="hero__product">
+                    <img
+                        src="images/hero.webp"
+                        alt=""
+                    >
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CARDÁPIO
+        ================================================== -->
+
+        <section
+            class="menu-section"
+            id="cardapio"
+            aria-labelledby="menu-title"
+        >
+
+            <div class="section-heading">
+
+                <span class="section-heading__eyebrow">
+                    Cardápio
+                </span>
+
+                <h2 id="menu-title">
+                    Escolha sua fome.
+                </h2>
+
+                <p>
+                    Monte seu pedido do seu jeito.
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 NAVEGAÇÃO DE CATEGORIAS
+            ============================================== -->
+
+            <nav
+                class="category-nav"
+                aria-label="Categorias do cardápio"
+            >
+
+                <a
+                    href="#hamburgueres"
+                    class="category-nav__item category-nav__item--active"
+                >
+                    Hambúrgueres
+                </a>
+
+                <a
+                    href="#caldos-pasteis"
+                    class="category-nav__item"
+                >
+                    Caldos & Pastéis
+                </a>
+
+                <a
+                    href="#espetinhos"
+                    class="category-nav__item"
+                >
+                    Espetinhos
+                </a>
+
+            </nav>
+
+
+            <!-- =============================================
+                 PRODUTOS
+            ============================================== -->
+
+            <div
+                class="menu"
+                id="menu"
+            >
+                <!--
+                    Os produtos são renderizados
+                    automaticamente pelo cart.js.
+                -->
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         CARRINHO
+    ====================================================== -->
+
+    <aside
+        class="cart-panel"
+        id="cart-panel"
+        aria-labelledby="cart-title"
+        aria-hidden="true"
+    >
+
+        <div class="cart-panel__header">
+
             <div>
-                <div class="cart-label">Total selecionado:</div>
-                <div id="cart-total" class="cart-total-value">R$ 0,00</div>
-            </div>
-        </div>
-        <a href="#" id="whatsapp-link" target="_blank" class="checkout-btn" onclick="return processCheckout(event)">
-            <i class="fa-brands fa-whatsapp"></i> Fechar Pedido no Whats
-        </a>
-    </div>
 
-    <!-- Seus Scripts (Primeiro o menu com preços, depois a lógica do carrinho) -->
+                <span class="cart-panel__eyebrow">
+                    Seu pedido
+                </span>
+
+                <h2 id="cart-title">
+                    Carrinho
+                </h2>
+
+            </div>
+
+            <button
+                class="cart-panel__close"
+                id="cart-close"
+                type="button"
+                aria-label="Fechar carrinho"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="cart-panel__items"
+            id="cart-items"
+        >
+            <!-- Carrinho renderizado pelo cart.js -->
+        </div>
+
+
+        <div class="cart-panel__footer">
+
+            <div class="cart-panel__total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="cart-total">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+            <button
+                class="cart-panel__checkout"
+                id="checkout"
+                type="button"
+                disabled
+            >
+                Pedir pelo WhatsApp
+            </button>
+
+            <p class="cart-panel__note">
+                A entrega e o frete serão calculados
+                durante o atendimento.
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         FUNDO DO CARRINHO
+    ====================================================== -->
+
+    <div
+        class="cart-overlay"
+        id="cart-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =====================================================
+         RODAPÉ
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="site-footer__inner">
+
+            <div class="site-footer__brand">
+
+                <strong>
+                    Tô no Trabalho
+                </strong>
+
+                <span>
+                    Hambúrgueres & Espetinhos
+                </span>
+
+            </div>
+
+
+            <p class="site-footer__copyright">
+                © 2026 Tô no Trabalho.
+                Todos os direitos reservados.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
     <script src="scripts/menu.js"></script>
+    <script src="scripts/prices.js"></script>
     <script src="scripts/cart.js"></script>
+
 </body>
+
 </html>
