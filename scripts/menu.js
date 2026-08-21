@@ -15,7 +15,7 @@
 const MENU_CONFIG = {
     restaurantName: "Tô no Trabalho",
 
-    whatsapp: "5566981357528",
+    whatsapp: "556681018088",
 
     currency: "BRL",
 
