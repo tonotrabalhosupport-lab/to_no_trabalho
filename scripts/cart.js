@@ -1,47 +1,32 @@
 /* =========================================================
    TÔ NO TRABALHO
    CART ENGINE
-
-   Responsabilidades:
-   → Renderizar o cardápio
-   → Organizar produtos por categoria
-   → Controlar opções
-   → Gerenciar o carrinho
-   → Calcular totais
-   → Abrir/fechar carrinho
-   → Gerar pedido para o WhatsApp
-
-   Dados:
-   → MENU
-   → PRICES
-========================================================= */
-
-
-/* =========================================================
-   ESTADO
 ========================================================= */
 
 const cart = [];
 
 
 /* =========================================================
-   CONFIGURAÇÃO DAS CATEGORIAS
+   CATEGORIAS
 ========================================================= */
 
 const CATEGORY_CONFIG = {
     hamburgueres: {
         title: "Hambúrgueres",
-        description: "Artesanais, generosos e feitos para matar a fome."
+        description:
+            "Artesanais, generosos e feitos para matar a fome."
     },
 
     "caldos-pasteis": {
         title: "Caldos & Pastéis",
-        description: "Escolha seu sabor e aproveite."
+        description:
+            "Escolha seu sabor e aproveite."
     },
 
     espetinhos: {
         title: "Espetinhos na Brasa",
-        description: "Na brasa, do simples ao completo."
+        description:
+            "Na brasa, do simples ao completo."
     }
 };
 
@@ -50,18 +35,32 @@ const CATEGORY_CONFIG = {
    ELEMENTOS
 ========================================================= */
 
-const menuContainer = document.querySelector("#menu");
+const menuContainer =
+    document.querySelector("#menu");
 
-const cartPanel = document.querySelector("#cart-panel");
-const cartOverlay = document.querySelector("#cart-overlay");
+const cartPanel =
+    document.querySelector("#cart-panel");
 
-const cartTrigger = document.querySelector("#cart-trigger");
-const cartClose = document.querySelector("#cart-close");
+const cartOverlay =
+    document.querySelector("#cart-overlay");
 
-const cartContainer = document.querySelector("#cart-items");
-const cartCount = document.querySelector("#cart-count");
-const cartTotal = document.querySelector("#cart-total");
-const checkoutButton = document.querySelector("#checkout");
+const cartTrigger =
+    document.querySelector("#cart-trigger");
+
+const cartClose =
+    document.querySelector("#cart-close");
+
+const cartContainer =
+    document.querySelector("#cart-items");
+
+const cartCount =
+    document.querySelector("#cart-count");
+
+const cartTotal =
+    document.querySelector("#cart-total");
+
+const checkoutButton =
+    document.querySelector("#checkout");
 
 
 /* =========================================================
@@ -69,10 +68,14 @@ const checkoutButton = document.querySelector("#checkout");
 ========================================================= */
 
 function formatPrice(value) {
-    return value.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: MENU_CONFIG.currency
-    });
+
+    return value.toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: MENU_CONFIG.currency
+        }
+    );
 }
 
 
@@ -80,14 +83,26 @@ function formatPrice(value) {
    PREÇO
 ========================================================= */
 
-function getProductPrice(product, option = null) {
+function getProductPrice(
+    product,
+    option = null
+) {
 
-    if (typeof product.priceKey === "string") {
-        return PRICES[product.priceKey];
+    if (
+        typeof product.priceKey ===
+        "string"
+    ) {
+
+        return PRICES[
+            product.priceKey
+        ];
     }
 
     if (option) {
-        return PRICES[product.priceKey[option]];
+
+        return PRICES[
+            product.priceKey[option]
+        ];
     }
 
     return 0;
@@ -110,59 +125,100 @@ function renderMenu() {
         "espetinhos"
     ];
 
-    categories.forEach(categoryId => {
+    categories.forEach(
+        categoryId => {
 
-        const products = MENU.filter(
-            product => product.category === categoryId
-        );
+            const products =
+                MENU.filter(
+                    product =>
+                        product.category ===
+                        categoryId
+                );
 
-        if (!products.length) return;
+            if (!products.length) {
+                return;
+            }
 
-        const category = CATEGORY_CONFIG[categoryId];
+            const category =
+                CATEGORY_CONFIG[
+                    categoryId
+                ];
 
-        const section = document.createElement("section");
+            const section =
+                document.createElement(
+                    "section"
+                );
 
-        section.className = "menu-category";
-        section.id = categoryId;
-        section.dataset.category = categoryId;
+            section.className =
+                "menu-category";
 
-        const heading = document.createElement("header");
+            section.id =
+                categoryId;
 
-        heading.className = "menu-category__heading";
+            const heading =
+                document.createElement(
+                    "header"
+                );
 
-        const title = document.createElement("h3");
+            heading.className =
+                "menu-category__heading";
 
-        title.className = "menu-category__title";
-        title.textContent = category.title;
+            const title =
+                document.createElement(
+                    "h3"
+                );
 
-        const description = document.createElement("p");
+            title.className =
+                "menu-category__title";
 
-        description.className = "menu-category__description";
-        description.textContent = category.description;
+            title.textContent =
+                category.title;
 
-        heading.append(
-            title,
-            description
-        );
+            const description =
+                document.createElement(
+                    "p"
+                );
 
-        const grid = document.createElement("div");
+            description.className =
+                "menu-category__description";
 
-        grid.className = "menu-category__grid";
+            description.textContent =
+                category.description;
 
-        products.forEach(product => {
-
-            grid.appendChild(
-                createProductCard(product)
+            heading.append(
+                title,
+                description
             );
-        });
 
-        section.append(
-            heading,
-            grid
-        );
+            const grid =
+                document.createElement(
+                    "div"
+                );
 
-        menuContainer.appendChild(section);
-    });
+            grid.className =
+                "menu-category__grid";
+
+            products.forEach(
+                product => {
+
+                    grid.appendChild(
+                        createProductCard(
+                            product
+                        )
+                    );
+                }
+            );
+
+            section.append(
+                heading,
+                grid
+            );
+
+            menuContainer.appendChild(
+                section
+            );
+        }
+    );
 }
 
 
@@ -172,38 +228,68 @@ function renderMenu() {
 
 function createProductCard(product) {
 
-    const card = document.createElement("article");
+    const card =
+        document.createElement(
+            "article"
+        );
 
-    card.className = "product-card";
-    card.dataset.productId = product.id;
+    card.className =
+        "product-card";
 
-    const image = document.createElement("img");
+    card.dataset.productId =
+        product.id;
 
-    image.className = "product-card__image";
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+    image.className =
+        "product-card__image";
 
     image.src =
         `${MENU_CONFIG.imagePath}${product.image}`;
 
-    image.alt = product.name;
+    image.alt =
+        product.name;
 
-    image.loading = "lazy";
+    image.loading =
+        "lazy";
 
-    const content = document.createElement("div");
 
-    content.className = "product-card__content";
+    const content =
+        document.createElement(
+            "div"
+        );
 
-    const title = document.createElement("h4");
+    content.className =
+        "product-card__content";
 
-    title.className = "product-card__title";
-    title.textContent = product.name;
 
-    const description = document.createElement("p");
+    const title =
+        document.createElement(
+            "h4"
+        );
+
+    title.className =
+        "product-card__title";
+
+    title.textContent =
+        product.name;
+
+
+    const description =
+        document.createElement(
+            "p"
+        );
 
     description.className =
         "product-card__description";
 
     description.textContent =
         product.description || "";
+
 
     content.append(
         title,
@@ -215,40 +301,54 @@ function createProductCard(product) {
        CALDOS E PASTÉIS
     ====================================================== */
 
-    if (product.category === "caldos-pasteis") {
+    if (
+        product.category ===
+        "caldos-pasteis"
+    ) {
 
         const select =
-            createFlavorSelect(product);
+            createFlavorSelect(
+                product
+            );
 
         const price =
-            document.createElement("strong");
+            document.createElement(
+                "strong"
+            );
 
         price.className =
             "product-card__price";
 
         price.textContent =
             formatPrice(
-                getProductPrice(product)
+                getProductPrice(
+                    product
+                )
             );
 
         const button =
-            createAddButton(product, () => {
+            createAddButton(
+                product,
+                () => {
 
-                if (!select.value) {
+                    if (!select.value) {
 
-                    select.focus();
+                        select.focus();
 
-                    return false;
+                        return false;
+                    }
+
+                    addToCart(
+                        product,
+                        select.value,
+                        getProductPrice(
+                            product
+                        )
+                    );
+
+                    return true;
                 }
-
-                addToCart(
-                    product,
-                    select.value,
-                    getProductPrice(product)
-                );
-
-                return true;
-            });
+            );
 
         content.append(
             select,
@@ -262,27 +362,35 @@ function createProductCard(product) {
        ESPETINHOS
     ====================================================== */
 
-    else if (product.category === "espetinhos") {
+    else if (
+        product.category ===
+        "espetinhos"
+    ) {
 
         const options =
-            createSkewerOptions(product);
+            createSkewerOptions(
+                product
+            );
 
         const price =
-            document.createElement("strong");
+            document.createElement(
+                "strong"
+            );
 
         price.className =
             "product-card__price";
 
-        const updatePrice = () => {
+        const updatePrice =
+            () => {
 
-            price.textContent =
-                formatPrice(
-                    getProductPrice(
-                        product,
-                        options.value
-                    )
-                );
-        };
+                price.textContent =
+                    formatPrice(
+                        getProductPrice(
+                            product,
+                            options.value
+                        )
+                    );
+            };
 
         options.addEventListener(
             "change",
@@ -292,19 +400,22 @@ function createProductCard(product) {
         updatePrice();
 
         const button =
-            createAddButton(product, () => {
+            createAddButton(
+                product,
+                () => {
 
-                addToCart(
-                    product,
-                    options.value,
-                    getProductPrice(
+                    addToCart(
                         product,
-                        options.value
-                    )
-                );
+                        options.value,
+                        getProductPrice(
+                            product,
+                            options.value
+                        )
+                    );
 
-                return true;
-            });
+                    return true;
+                }
+            );
 
         content.append(
             options,
@@ -321,33 +432,43 @@ function createProductCard(product) {
     else {
 
         const price =
-            document.createElement("strong");
+            document.createElement(
+                "strong"
+            );
 
         price.className =
             "product-card__price";
 
         price.textContent =
             formatPrice(
-                getProductPrice(product)
+                getProductPrice(
+                    product
+                )
             );
 
         const button =
-            createAddButton(product, () => {
+            createAddButton(
+                product,
+                () => {
 
-                addToCart(
-                    product,
-                    null,
-                    getProductPrice(product)
-                );
+                    addToCart(
+                        product,
+                        null,
+                        getProductPrice(
+                            product
+                        )
+                    );
 
-                return true;
-            });
+                    return true;
+                }
+            );
 
         content.append(
             price,
             button
         );
     }
+
 
     card.append(
         image,
@@ -359,59 +480,80 @@ function createProductCard(product) {
 
 
 /* =========================================================
-   SELECT — CALDOS E PASTÉIS
+   SABORES
 ========================================================= */
 
 function createFlavorSelect(product) {
 
     const wrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     wrapper.className =
         "product-card__option";
 
+
     const label =
-        document.createElement("label");
+        document.createElement(
+            "label"
+        );
 
     label.textContent =
         "Escolha o sabor";
 
-    label.htmlFor =
-        `${product.id}-flavor`;
 
     const select =
-        document.createElement("select");
-
-    select.id =
-        `${product.id}-flavor`;
+        document.createElement(
+            "select"
+        );
 
     select.className =
         "product-card__select";
 
-    const placeholder =
-        document.createElement("option");
 
-    placeholder.value = "";
+    const placeholder =
+        document.createElement(
+            "option"
+        );
+
+    placeholder.value =
+        "";
+
     placeholder.textContent =
         "Selecionar sabor";
 
-    placeholder.disabled = true;
-    placeholder.selected = true;
+    placeholder.disabled =
+        true;
+
+    placeholder.selected =
+        true;
 
     select.appendChild(
         placeholder
     );
 
-    product.options.forEach(option => {
 
-        const item =
-            document.createElement("option");
+    product.options.forEach(
+        option => {
 
-        item.value = option;
-        item.textContent = option;
+            const item =
+                document.createElement(
+                    "option"
+                );
 
-        select.appendChild(item);
-    });
+            item.value =
+                option;
+
+            item.textContent =
+                option;
+
+            select.appendChild(
+                item
+            );
+        }
+    );
+
 
     wrapper.append(
         label,
@@ -423,19 +565,24 @@ function createFlavorSelect(product) {
 
 
 /* =========================================================
-   RADIO — ESPETINHOS
+   ESPETINHOS
 ========================================================= */
 
 function createSkewerOptions(product) {
 
     const wrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     wrapper.className =
         "product-card__option";
 
+
     const label =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     label.className =
         "product-card__option-label";
@@ -443,52 +590,79 @@ function createSkewerOptions(product) {
     label.textContent =
         "Escolha a opção";
 
-    wrapper.appendChild(label);
+    wrapper.appendChild(
+        label
+    );
+
 
     const group =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     group.className =
         "product-card__radio-group";
+
 
     product.options.forEach(
         (option, index) => {
 
             const label =
-                document.createElement("label");
+                document.createElement(
+                    "label"
+                );
 
             label.className =
                 "product-card__radio";
 
-            const input =
-                document.createElement("input");
 
-            input.type = "radio";
-            input.name = product.id;
-            input.value = option;
+            const input =
+                document.createElement(
+                    "input"
+                );
+
+            input.type =
+                "radio";
+
+            input.name =
+                product.id;
+
+            input.value =
+                option;
 
             if (index === 0) {
-                input.checked = true;
+                input.checked =
+                    true;
             }
 
+
             const text =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
 
             text.textContent =
                 option === "simples"
                     ? "Simples"
                     : "Completo";
 
+
             label.append(
                 input,
                 text
             );
 
-            group.appendChild(label);
+            group.appendChild(
+                label
+            );
         }
     );
 
-    wrapper.appendChild(group);
+
+    wrapper.appendChild(
+        group
+    );
+
 
     Object.defineProperty(
         wrapper,
@@ -508,21 +682,28 @@ function createSkewerOptions(product) {
 
 
 /* =========================================================
-   BOTÃO DE ADICIONAR
+   BOTÃO
 ========================================================= */
 
-function createAddButton(product, callback) {
+function createAddButton(
+    product,
+    callback
+) {
 
     const button =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
 
-    button.type = "button";
+    button.type =
+        "button";
 
     button.className =
         "product-card__add";
 
     button.textContent =
         "Adicionar";
+
 
     button.addEventListener(
         "click",
@@ -531,7 +712,9 @@ function createAddButton(product, callback) {
             const success =
                 callback();
 
-            if (!success) return;
+            if (!success) {
+                return;
+            }
 
             button.classList.add(
                 "product-card__add--added"
@@ -540,25 +723,30 @@ function createAddButton(product, callback) {
             button.textContent =
                 "Adicionado ✓";
 
-            setTimeout(() => {
 
-                button.classList.remove(
-                    "product-card__add--added"
-                );
+            setTimeout(
+                () => {
 
-                button.textContent =
-                    "Adicionar";
+                    button.classList.remove(
+                        "product-card__add--added"
+                    );
 
-            }, 900);
+                    button.textContent =
+                        "Adicionar";
+
+                },
+                900
+            );
         }
     );
+
 
     return button;
 }
 
 
 /* =========================================================
-   ADICIONAR AO CARRINHO
+   ADICIONAR
 ========================================================= */
 
 function addToCart(
@@ -568,10 +756,14 @@ function addToCart(
 ) {
 
     const existingItem =
-        cart.find(item =>
-            item.productId === product.id &&
-            item.option === option
+        cart.find(
+            item =>
+                item.productId ===
+                    product.id &&
+                item.option ===
+                    option
         );
+
 
     if (existingItem) {
 
@@ -580,20 +772,30 @@ function addToCart(
     } else {
 
         cart.push({
-            productId: product.id,
-            name: product.name,
-            option,
-            price,
-            quantity: 1
+            productId:
+                product.id,
+
+            name:
+                product.name,
+
+            option:
+                option,
+
+            price:
+                price,
+
+            quantity:
+                1
         });
     }
+
 
     renderCart();
 }
 
 
 /* =========================================================
-   ALTERAR QUANTIDADE
+   QUANTIDADE
 ========================================================= */
 
 function changeQuantity(
@@ -601,28 +803,43 @@ function changeQuantity(
     amount
 ) {
 
-    const item = cart[index];
+    const item =
+        cart[index];
 
-    if (!item) return;
-
-    item.quantity += amount;
-
-    if (item.quantity <= 0) {
-
-        cart.splice(index, 1);
+    if (!item) {
+        return;
     }
+
+
+    item.quantity +=
+        amount;
+
+
+    if (
+        item.quantity <= 0
+    ) {
+
+        cart.splice(
+            index,
+            1
+        );
+    }
+
 
     renderCart();
 }
 
 
 /* =========================================================
-   REMOVER ITEM
+   REMOVER
 ========================================================= */
 
 function removeFromCart(index) {
 
-    cart.splice(index, 1);
+    cart.splice(
+        index,
+        1
+    );
 
     renderCart();
 }
@@ -635,7 +852,10 @@ function removeFromCart(index) {
 function getCartTotal() {
 
     return cart.reduce(
-        (total, item) =>
+        (
+            total,
+            item
+        ) =>
             total +
             item.price *
             item.quantity,
@@ -645,13 +865,16 @@ function getCartTotal() {
 
 
 /* =========================================================
-   QUANTIDADE TOTAL
+   QUANTIDADE
 ========================================================= */
 
 function getCartQuantity() {
 
     return cart.reduce(
-        (total, item) =>
+        (
+            total,
+            item
+        ) =>
             total +
             item.quantity,
         0
@@ -660,25 +883,33 @@ function getCartQuantity() {
 
 
 /* =========================================================
-   RENDERIZAÇÃO DO CARRINHO
+   CARRINHO
 ========================================================= */
 
 function renderCart() {
 
-    if (!cartContainer) return;
+    if (!cartContainer) {
+        return;
+    }
 
-    cartContainer.innerHTML = "";
+
+    cartContainer.innerHTML =
+        "";
+
 
     if (!cart.length) {
 
         const empty =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
 
         empty.className =
             "cart__empty";
 
         empty.textContent =
             "Seu carrinho está vazio.";
+
 
         cartContainer.appendChild(
             empty
@@ -687,7 +918,10 @@ function renderCart() {
     } else {
 
         cart.forEach(
-            (item, index) => {
+            (
+                item,
+                index
+            ) => {
 
                 const element =
                     document.createElement(
@@ -696,6 +930,7 @@ function renderCart() {
 
                 element.className =
                     "cart-item";
+
 
                 const name =
                     document.createElement(
@@ -709,6 +944,7 @@ function renderCart() {
                     item.option
                         ? `${item.name} — ${formatOption(item.option)}`
                         : item.name;
+
 
                 const subtotal =
                     document.createElement(
@@ -724,6 +960,7 @@ function renderCart() {
                         item.quantity
                     );
 
+
                 const controls =
                     document.createElement(
                         "div"
@@ -732,17 +969,17 @@ function renderCart() {
                 controls.className =
                     "cart-item__controls";
 
+
                 const decrease =
                     document.createElement(
                         "button"
                     );
 
-                decrease.type = "button";
-                decrease.textContent = "−";
-                decrease.setAttribute(
-                    "aria-label",
-                    `Diminuir quantidade de ${item.name}`
-                );
+                decrease.type =
+                    "button";
+
+                decrease.textContent =
+                    "−";
 
                 decrease.addEventListener(
                     "click",
@@ -753,6 +990,7 @@ function renderCart() {
                         )
                 );
 
+
                 const quantity =
                     document.createElement(
                         "span"
@@ -761,17 +999,17 @@ function renderCart() {
                 quantity.textContent =
                     item.quantity;
 
+
                 const increase =
                     document.createElement(
                         "button"
                     );
 
-                increase.type = "button";
-                increase.textContent = "+";
-                increase.setAttribute(
-                    "aria-label",
-                    `Aumentar quantidade de ${item.name}`
-                );
+                increase.type =
+                    "button";
+
+                increase.textContent =
+                    "+";
 
                 increase.addEventListener(
                     "click",
@@ -782,12 +1020,15 @@ function renderCart() {
                         )
                 );
 
+
                 const remove =
                     document.createElement(
                         "button"
                     );
 
-                remove.type = "button";
+                remove.type =
+                    "button";
+
                 remove.textContent =
                     "Remover";
 
@@ -799,6 +1040,7 @@ function renderCart() {
                         )
                 );
 
+
                 controls.append(
                     decrease,
                     quantity,
@@ -806,11 +1048,13 @@ function renderCart() {
                     remove
                 );
 
+
                 element.append(
                     name,
                     subtotal,
                     controls
                 );
+
 
                 cartContainer.appendChild(
                     element
@@ -819,23 +1063,30 @@ function renderCart() {
         );
     }
 
+
     const total =
         getCartTotal();
 
     const quantity =
         getCartQuantity();
 
+
     if (cartCount) {
         cartCount.textContent =
             quantity;
     }
 
+
     if (cartTotal) {
         cartTotal.textContent =
-            formatPrice(total);
+            formatPrice(
+                total
+            );
     }
 
+
     if (checkoutButton) {
+
         checkoutButton.disabled =
             cart.length === 0;
     }
@@ -843,7 +1094,7 @@ function renderCart() {
 
 
 /* =========================================================
-   FORMATAÇÃO DAS OPÇÕES
+   OPÇÕES
 ========================================================= */
 
 function formatOption(option) {
@@ -853,22 +1104,29 @@ function formatOption(option) {
         completo: "Completo"
     };
 
-    return labels[option] || option;
+    return (
+        labels[option] ||
+        option
+    );
 }
 
 
 /* =========================================================
-   CARRINHO — ABRIR
+   ABRIR CARRINHO
 ========================================================= */
 
 function openCart() {
 
-    if (!cartPanel) return;
+    if (!cartPanel) {
+        return;
+    }
+
 
     document.body.classList.add(
         "cart-open"
     );
 
+
     cartPanel.setAttribute(
         "aria-hidden",
         "false"
@@ -882,17 +1140,21 @@ function openCart() {
 
 
 /* =========================================================
-   CARRINHO — FECHAR
+   FECHAR CARRINHO
 ========================================================= */
 
 function closeCart() {
 
-    if (!cartPanel) return;
+    if (!cartPanel) {
+        return;
+    }
+
 
     document.body.classList.remove(
         "cart-open"
     );
 
+
     cartPanel.setAttribute(
         "aria-hidden",
         "true"
@@ -906,7 +1168,7 @@ function closeCart() {
 
 
 /* =========================================================
-   CARRINHO — TOGGLE
+   TOGGLE
 ========================================================= */
 
 function toggleCart() {
@@ -936,53 +1198,69 @@ function createWhatsAppMessage() {
         return "";
     }
 
+
     const lines = [];
+
 
     lines.push(
         `*Pedido — ${MENU_CONFIG.restaurantName}*`
     );
 
-    lines.push("");
-
-    cart.forEach(item => {
-
-        const itemName =
-            item.option
-                ? `${item.name} — ${formatOption(item.option)}`
-                : item.name;
-
-        const subtotal =
-            item.price *
-            item.quantity;
-
-        lines.push(
-            `• ${item.quantity}x ${itemName} — ${formatPrice(subtotal)}`
-        );
-    });
 
     lines.push("");
+
+
+    cart.forEach(
+        item => {
+
+            const itemName =
+                item.option
+                    ? `${item.name} — ${formatOption(item.option)}`
+                    : item.name;
+
+
+            const subtotal =
+                item.price *
+                item.quantity;
+
+
+            lines.push(
+                `• ${item.quantity}x ${itemName} — ${formatPrice(subtotal)}`
+            );
+        }
+    );
+
+
+    lines.push("");
+
 
     lines.push(
         `*Total: ${formatPrice(getCartTotal())}*`
     );
 
+
     lines.push("");
+
 
     lines.push(
         "Olá! Gostaria de finalizar meu pedido. Poderiam calcular a entrega e o frete, por favor?"
     );
+
 
     return lines.join("\n");
 }
 
 
 /* =========================================================
-   FINALIZAÇÃO
+   CHECKOUT
 ========================================================= */
 
 function checkout() {
 
-    if (!cart.length) return;
+    if (!cart.length) {
+        return;
+    }
+
 
     if (!MENU_CONFIG.whatsapp) {
 
@@ -993,8 +1271,10 @@ function checkout() {
         return;
     }
 
+
     const message =
         createWhatsAppMessage();
+
 
     const phone =
         MENU_CONFIG.whatsapp.replace(
@@ -1002,8 +1282,10 @@ function checkout() {
             ""
         );
 
+
     const url =
         `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
 
     window.open(
         url,
@@ -1014,7 +1296,7 @@ function checkout() {
 
 
 /* =========================================================
-   NAVEGAÇÃO DAS CATEGORIAS
+   NAVEGAÇÃO
 ========================================================= */
 
 function setupCategoryNavigation() {
@@ -1024,30 +1306,34 @@ function setupCategoryNavigation() {
             ".category-nav__item"
         );
 
-    links.forEach(link => {
 
-        link.addEventListener(
-            "click",
-            () => {
+    links.forEach(
+        link => {
 
-                links.forEach(
-                    item =>
-                        item.classList.remove(
-                            "category-nav__item--active"
-                        )
-                );
+            link.addEventListener(
+                "click",
+                () => {
 
-                link.classList.add(
-                    "category-nav__item--active"
-                );
-            }
-        );
-    });
+                    links.forEach(
+                        item =>
+                            item.classList.remove(
+                                "category-nav__item--active"
+                            )
+                    );
+
+
+                    link.classList.add(
+                        "category-nav__item--active"
+                    );
+                }
+            );
+        }
+    );
 }
 
 
 /* =========================================================
-   EVENTOS DO CARRINHO
+   EVENTOS
 ========================================================= */
 
 cartTrigger?.addEventListener(
@@ -1072,7 +1358,7 @@ checkoutButton?.addEventListener(
 
 
 /* =========================================================
-   ESC — FECHAR CARRINHO
+   ESC
 ========================================================= */
 
 document.addEventListener(
